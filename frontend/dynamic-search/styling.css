@@ -1,0 +1,95 @@
+
+.main-div{
+	
+	padding:2px;
+
+}
+.search-input{
+	border-radius: 2px;
+	border-color: dodgerblue;
+	height: 20px;
+	width: 100%;
+	margin: 8px;
+}
+span{
+	margin: 5px;
+}
+a{
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	color: dodgerblue;
+}
+.list{
+	position: absolute;
+	width: 100%;
+	margin: 8px;
+	margin-top: 0px;
+	background-color: #ffffff;
+	z-index: 99;
+	
+}
+ul{
+	list-style: none;
+    padding: 1px;
+    margin-top: 0;
+}
+
+.auto-complete-items{
+	padding:1px ;
+	cursor: pointer;
+
+
+}
+.auto-complete-items:hover {
+  /*when hovering an item:*/
+  background-color: #dee0e3;
+  opacity: 0.5;
+}
+.text-style{
+	font-size: 12px;
+	font-weight: bold;
+}
+.Saisir-input{
+
+	justify-content: "center";
+	align-items: "center";
+	font-size: 13px;
+	width: 80px;
+	
+}
+.row{
+	display: inline-flex;
+	flex-direction: row;
+	column-gap: 5px;
+	justify-content: center;
+	align-items: center;
+	padding: 3px;
+}
+.h4{
+	margin: 0px;
+	text-align: center;
+	font-weight: 400;
+}
+.text-data-cell{
+	width: 150px;
+
+}
+.saveBtn{
+	width: 190px;
+	height: 35px;
+	margin: 10px;
+	background-color: dodgerblue;
+	border-color: dodgerblue;
+	border-radius: 9px;
+	color: white;
+	font-size: 13x;
+	font-weight: bold;
+	cursor: pointer;
+
+
+
+}
+.updated{
+	color: #19f00a;
+}
