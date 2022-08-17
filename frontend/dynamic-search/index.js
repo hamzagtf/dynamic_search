@@ -3,8 +3,18 @@ import SearchInput from "./search-input.js";
 import { Plus, Dash } from "react-bootstrap-icons";
 import InsertDataInput from "./insert-data-input.js";
 import "./styling.css";
-
-const initialState = { patientData: [], changesMade: false , dataToBeSaved:[]};
+export const reformDataFromServer = (data) => {
+	const { controlData, value, date, id } = data;
+	return {
+		...controlData,
+		id: String(controlData.id),
+		controlDataId:id,
+		value,
+		date,
+		state: "old",
+	};
+};
+const initialState = { patientData: [], changesMade: false, dataToBeSaved: [] };
 const reducer = (state, action) => {
 	switch (action.type) {
 		case "changesAreMade":
@@ -21,7 +31,9 @@ const reducer = (state, action) => {
 			return {
 				...state,
 				patientData: [
-					...state.patientData.filter((i) => i.id !== action.payload.id),
+					...state.patientData.filter(
+						(i) => i.id !== action.payload.id
+					),
 					action.payload,
 				],
 			};
@@ -33,31 +45,39 @@ const reducer = (state, action) => {
 				),
 			};
 		case "refresh":
-				return {
-					...state,
-					patientData: state.patientData.map(
-						(i) => ({...i,state: i.state === "new"? "old":i.state  })
-					),
-				};
-		
-		
+			return {
+				...state,
+				patientData: state.patientData.map((i) => ({
+					...i,
+					state: i.state === "new" ? "old" : i.state,
+				})),
+			};
+
 		case "clearDataToBeSaved":
-			return {...state , dataToBeSaved:[] };
+			return { ...state, dataToBeSaved: [] };
 
 		case "addDataToBeSaved":
-			return {...state,
-				dataToBeSaved:[...state.dataToBeSaved.filter((i) => i.id !== action.payload.id),
-					action.payload,] }
+			return {
+				...state,
+				dataToBeSaved: [
+					...state.dataToBeSaved.filter(
+						(i) => i.id !== action.payload.id
+					),
+					action.payload,
+				],
+			};
 
 		case "removeFromDataToBeSaved":
 			return {
-					...state,
-					dataToBeSaved: state.dataToBeSaved.filter(
-							(i) => i.id !== action.payload.id
-						),
-					};
+				...state,
+				dataToBeSaved: state.dataToBeSaved.filter(
+					(i) => i.id !== action.payload.id
+				),
+			};
 		default:
-			throw new Error("action type is not correct for the patient data !!");
+			throw new Error(
+				"action type is not correct for the patient data !!"
+			);
 	}
 };
 
@@ -77,11 +97,11 @@ const AddNewData = (props) => {
 	const onDelete = (obj) => {
 		dispatch({ type: "removePatientData", payload: { id: obj.id } });
 		const deletedItem = { ...obj, state: "removed" };
-		const dataToBeSavedCase = obj.state === "new" 
-									? "removeFromDataToBeSaved"
-									: "addDataToBeSaved"
-	    dispatch({ type: dataToBeSavedCase , payload:deletedItem});
-
+		const dataToBeSavedCase =
+			obj.state === "new"
+				? "removeFromDataToBeSaved"
+				: "addDataToBeSaved";
+		dispatch({ type: dataToBeSavedCase, payload: deletedItem });
 	};
 	const saveData = () => {
 		// data to save it on the server
@@ -91,12 +111,11 @@ const AddNewData = (props) => {
 		//2- new data is inserted
 		//3- old data is  deleted
 		// return an array of objects else return empty array
-		
-		props.onSave(state.dataToBeSaved);
-		console.log(state.dataToBeSaved)
-		dispatch({ type: "clearDataToBeSaved" , payload:[] });
-		dispatch({ type: "refresh", payload: [] });
 
+		props.onSave(state.dataToBeSaved);
+		console.log(state.dataToBeSaved);
+		dispatch({ type: "clearDataToBeSaved", payload: [] });
+		dispatch({ type: "refresh", payload: [] });
 	};
 	const handleInputRequest = (obj) => {
 		// to add new input to the dom
@@ -131,7 +150,10 @@ const AddNewData = (props) => {
 				) : null}
 			</div>
 			<div className={"row"}>
-				<a onClick={() => setShowSearchInput(!showSearchInput)} href="#">
+				<a
+					onClick={() => setShowSearchInput(!showSearchInput)}
+					href="#"
+				>
 					{!showSearchInput ? (
 						<>
 							<Plus color="dodgerblue" size={22} />

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListCreateAPIView, ListAPIView, GenericAPIView
 from .models import ControlData, PatientControlData
-from .serializers import ControlDataSerializer, PatientControlDataSerializer, PatientControlDataArchiveSerializer, PatientArchiveControlData
+from .serializers import ControlDataSerializer,PatientControlCreateDataSerializer, PatientControlDataArchiveSerializer, PatientArchiveControlData, PatientControlRetrieveDataSerializer
 from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
@@ -22,6 +22,7 @@ class ControlDataApiView(
     serializer_class = ControlDataSerializer
     #permission_classes = [IsAuthenticated]
 
+
     def create(self, request, *args, **kwargs):
         data = request.data
         if isinstance(data, list):
@@ -33,6 +34,9 @@ class ControlDataApiView(
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data,
                     headers=headers)
+
+    
+   
 
     def get(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
@@ -79,27 +83,27 @@ class PatientApiView(
     mixins.DestroyModelMixin,
     GenericAPIView):
     queryset = PatientControlData.objects.all() 
-    serializer_class = PatientControlDataSerializer
-   
-        
-    
-
-    
-    
-
+    serializer_class = PatientControlRetrieveDataSerializer
 
     def create(self, request, *args, **kwargs):
        
         data = request.data
         if isinstance(data, list):
-            serializer = self.get_serializer(data=request.data, many=True)
+            serializer = PatientControlCreateDataSerializer(data=request.data, many=True)
         else:
-            serializer = self.get_serializer(data=request.data)
+            serializer = PatientControlCreateDataSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data,
                     headers=headers)
+    
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()  # uses PK from URL
+        serializer = PatientControlCreateDataSerializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
     
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)

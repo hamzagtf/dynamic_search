@@ -9,11 +9,18 @@ class ControlDataSerializer(serializers.ModelSerializer):
     
     
 
-class PatientControlDataSerializer(serializers.ModelSerializer):
+class PatientControlCreateDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PatientControlData
+        fields = ('id', 'patient', 'controlData', 'value', 'date')
+
+class PatientControlRetrieveDataSerializer(serializers.ModelSerializer):
+    controlData = ControlDataSerializer()
 
     class Meta:
         model = PatientControlData
-        fields = ['id', 'unitName', 'unit', 'patient', 'value', 'date']
+        fields = ('id', 'patient', 'controlData', 'value', 'date')  
+        read_only = ('id', 'patient', 'controlData', 'value', 'date')    
     
 
 
